@@ -1,3 +1,5 @@
+import json
+
 class student:
     def __init__(self, name, id, marks):
         self.name = name
@@ -5,23 +7,47 @@ class student:
         self.marks = marks
 
     def average(self):
-        return sum(self.marks) / len(self.marks)
+        return float(sum(self.marks) / len(self.marks))
 
     def save_in_file(self):
+        data = {
+            'name': self.name,
+            'id': self.id,
+            'marks': self.marks,
+            'average': self.average()
+        }
+
         with open("erp.txt", "a") as f:
-            f.write(f"{self.name},{self.id},{self.marks},{self.average()}\n")
+            json.dump(data, f)
+            f.write('\n')
+
+    @staticmethod
+    def read_from_file():
+
+        try:
+            with open("erp.txt", "r") as f:
+                for line in f:
+                    data = json.loads(line)
+                    print(f"Student_name - {data['name']}")
+                    print(f"Student_ID - {data['id']}")
+
+                    print(f"IOT_Marks - {data['marks'][0]}")
+                    print(f"Maths_Marks- {data['marks'][1]}")
+                    print(f"OS_Marks - {data['marks'][2]}")
+                    print(f"DSA_Marks - {data['marks'][3]}")
+                    print(f"C_Programming Marks - {data['marks'][4]}")
+
+                    print(f"Student_average - {data['average']}")
+
+        except FileNotFoundError:
+            print('File Not Found')
+
 
 def statements():
     print('1 - Add student...')
     print('2 - See all students...')
-
-
-def read_from_file():
-    try:
-        with open("erp.txt", "r") as f:
-            print(f.read())
-    except FileNotFoundError:
-        print('File Not Found')
+    print('3 - See Topper student...')
+    print('4 - Exit from here...')
 
 
 while True:
@@ -49,14 +75,36 @@ while True:
 
         Marks = []
 
-        while len(Marks) < 5:
-            try:
-                Marks.append(int(input('Enter Student Marks: ')))
-            except ValueError:
-                print('Invalid Marks,Please fill again...')
+        try:
+            Marks.append(int(input('Enter IOT Marks: ')))
+            Marks.append(int(input('Enter Maths Marks: ')))
+            Marks.append(int(input('Enter OS Marks: ')))
+            Marks.append(int(input('Enter DSA Marks: ')))
+            Marks.append(int(input('Enter C Programming Marks: ')))
+
+        except ValueError:
+            print('Invalid Marks,Please fill again...')
 
         s1 = student(Name, Id, Marks)
         s1.save_in_file()
 
     elif choice == 2:
-        read_from_file()
+        student.read_from_file()
+
+    elif choice == 3:
+        topper = 0
+
+        with open("erp.txt", "r") as f:
+            line = f.readline()
+
+            fwhile line != "":
+                data["average"] > topper
+                topper =
+
+
+
+    elif choice == 4:
+        break
+
+    else:
+        print('Invalid Choice,Please try again...')
