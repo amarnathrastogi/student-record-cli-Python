@@ -91,17 +91,30 @@ while True:
     elif choice == 2:
         student.read_from_file()
 
+
     elif choice == 3:
-        topper = 0
 
-        with open("erp.txt", "r") as f:
-            line = f.readline()
+        try:
+            topper = None
 
-            fwhile line != "":
-                data["average"] > topper
-                topper =
+            with open("erp.txt", "r") as f:
+                for line in f:
+                    student_data = json.loads(line)
 
+                    if (topper is None) or (student_data["average"] > topper["average"]):
+                        topper = student_data
 
+            if topper:
+                print("\n🏆 Topper Student:")
+                print("Name:", topper["name"])
+                print("ID:", topper["id"])
+                print("Marks:", topper["marks"])
+                print("Average:", topper["average"])
+            else:
+                print("No students found")
+
+        except FileNotFoundError:
+            print("File not found")
 
     elif choice == 4:
         break
