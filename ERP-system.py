@@ -1,12 +1,18 @@
 import json
 
-class student:
+class Student:
     def __init__(self, name, id, marks):
         self.name = name
         self.id = id
         self.marks = marks
 
     def average(self):
+        try:
+            float(sum(self.marks) / len(self.marks))
+            return round(sum(self.marks) / len(self.marks), 2)
+        except (ZeroDivisionError, TypeError):
+            return 0
+
         return float(sum(self.marks) / len(self.marks))
 
     def save_in_file(self):
@@ -23,7 +29,6 @@ class student:
 
     @staticmethod
     def read_from_file():
-
         try:
             with open("erp.txt", "r") as f:
                 for line in f:
@@ -61,36 +66,72 @@ while True:
         continue
 
     if choice == 1:
+        while True:
+            try:
+                Id = int(input('Enter Student ID: '))
+                break
+            except ValueError:
+                print('Invalid ID,Please try again...')
 
-        try:
-            Id = int(input('Enter Student ID: '))
-        except ValueError:
-            print('Invalid ID,Please try again...')
-            continue
-
-        Name = input('Enter Student Name: ')
-        if not Name.strip() or Name.isdigit():
-            print('Invalid Name,Please try again...')
-            continue
+        while True:
+            try:
+                Name = input('Enter Student Name: ')
+                if Name.isdigit() or Name.isspace() or Name == '':
+                    print('Invalid Name,Please try again...')
+                else:
+                    break
+            except:
+                print('Invalid Name,Please try again...')
 
         Marks = []
 
-        try:
-            Marks.append(int(input('Enter IOT Marks: ')))
-            Marks.append(int(input('Enter Maths Marks: ')))
-            Marks.append(int(input('Enter OS Marks: ')))
-            Marks.append(int(input('Enter DSA Marks: ')))
-            Marks.append(int(input('Enter C Programming Marks: ')))
+        while len(Marks) != 5:
 
-        except ValueError:
-            print('Invalid Marks,Please fill again...')
+            if len(Marks) == 0:
+                while True:
+                    try:
+                        Marks.append(int(input('Enter IOT Marks: ')))
+                        break
+                    except ValueError:
+                        print('fill again...')
 
-        s1 = student(Name, Id, Marks)
+            if len(Marks) == 1:
+                while True:
+                    try:
+                        Marks.append(int(input('Enter Maths Marks: ')))
+                        break
+                    except ValueError:
+                        print('fill again...')
+
+            if len(Marks) == 2:
+                while True:
+                    try:
+                        Marks.append(int(input('Enter OS Marks: ')))
+                        break
+                    except ValueError:
+                        print('fill again...')
+
+            if len(Marks) == 3:
+                while True:
+                    try:
+                        Marks.append(int(input('Enter DSA Marks: ')))
+                        break
+                    except ValueError:
+                        print('fill again...')
+
+            if len(Marks) == 4:
+                while True:
+                    try:
+                        Marks.append(int(input('Enter C Programming Marks: ')))
+                        break
+                    except ValueError:
+                        print('fill again...')
+
+        s1 = Student(Name, Id, Marks)
         s1.save_in_file()
 
     elif choice == 2:
-        student.read_from_file()
-
+        Student.read_from_file()
 
     elif choice == 3:
 
