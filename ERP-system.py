@@ -8,12 +8,9 @@ class Student:
 
     def average(self):
         try:
-            float(sum(self.marks) / len(self.marks))
             return round(sum(self.marks) / len(self.marks), 2)
         except (ZeroDivisionError, TypeError):
             return 0
-
-        return float(sum(self.marks) / len(self.marks))
 
     def save_in_file(self):
         data = {
@@ -74,15 +71,11 @@ while True:
                 print('Invalid ID,Please try again...')
 
         while True:
-            try:
                 Name = input('Enter Student Name: ')
                 if Name.isdigit() or Name.isspace() or Name == '':
                     print('Invalid Name,Please try again...')
                 else:
                     break
-            except:
-                print('Invalid Name,Please try again...')
-
         Marks = []
 
         while len(Marks) != 5:
