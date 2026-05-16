@@ -19,7 +19,6 @@ class Student:
             'marks': self.marks,
             'average': self.average()
         }
-
         with open("erp.txt", "a") as f:
             json.dump(data, f)
             f.write('\n')
@@ -28,130 +27,183 @@ class Student:
     def read_from_file():
         try:
             with open("erp.txt", "r") as f:
-                for line in f:
-                    data = json.loads(line)
-                    print(f"Student_name - {data['name']}")
-                    print(f"Student_ID - {data['id']}")
-
-                    print(f"IOT_Marks - {data['marks'][0]}")
-                    print(f"Maths_Marks- {data['marks'][1]}")
-                    print(f"OS_Marks - {data['marks'][2]}")
-                    print(f"DSA_Marks - {data['marks'][3]}")
-                    print(f"C_Programming Marks - {data['marks'][4]}")
-
-                    print(f"Student_average - {data['average']}")
-
+                lines = f.readlines()
+            if not lines:
+                print("""
+╔══════════════════════════════════════╗
+║   ⚠  No Students Found In File !    ║
+╚══════════════════════════════════════╝
+""")
+                return
+            for line in lines:
+                data = json.loads(line)
+                print(f"""
+╔══════════════════════════════════════════╗
+║           S T U D E N T   I N F O        ║
+╠══════════════════════════════════════════╣
+║  Name          : {data['name']:<24s}║
+║  ID            : {str(data['id']):<24s}║
+╠══════════════════════════════════════════╣
+║  IOT           : {str(data['marks'][0]):<24s}║
+║  Maths         : {str(data['marks'][1]):<24s}║
+║  OS            : {str(data['marks'][2]):<24s}║
+║  DSA           : {str(data['marks'][3]):<24s}║
+║  C Programming : {str(data['marks'][4]):<24s}║
+╠══════════════════════════════════════════╣
+║  Average       : {str(data['average']):<24s}║
+╚══════════════════════════════════════════╝
+""")
         except FileNotFoundError:
-            print('File Not Found')
+            print("""
+╔══════════════════════════════════╗
+║   ⚠  File Not Found !           ║
+╚══════════════════════════════════╝
+""")
+
+
+def welcome():
+    print("""
+╔══════════════════════════════════════════════════════╗
+║                                                      ║
+║       S T U D E N T   E R P   S Y S T E M            ║
+║                                                      ║
+╚══════════════════════════════════════════════════════╝
+""")
 
 
 def statements():
-    print('1 - Add student...')
-    print('2 - See all students...')
-    print('3 - See Topper student...')
-    print('4 - Exit from here...')
+    print("""
+╔══════════════════════════════════════╗
+║           M A I N   M E N U          ║
+╠══════════════════════════════════════╣
+║   1  -->  Add Student                ║
+║   2  -->  See All Students           ║
+║   3  -->  See Topper Student         ║
+║   4  -->  Exit                       ║
+╚══════════════════════════════════════╝""")
 
+
+welcome()
 
 while True:
 
     statements()
 
     try:
-        choice = int(input('Enter Choice: '))
+        choice = int(input("\n  $ Enter Choice : "))
     except ValueError:
-        print('Invalid Choice,Please try again...')
+        print("""
+╔══════════════════════════════════════╗
+║   ⚠  Invalid Choice, Try Again !    ║
+╚══════════════════════════════════════╝
+""")
         continue
 
     if choice == 1:
+        print("""
+╔══════════════════════════════════════╗
+║       A D D   S T U D E N T          ║
+╚══════════════════════════════════════╝""")
+
         while True:
             try:
-                Id = int(input('Enter Student ID: '))
+                Id = int(input("  $ Enter Student ID   : "))
                 break
             except ValueError:
-                print('Invalid ID,Please try again...')
+                print("  ⚠  Invalid ID, Please enter a number...")
 
         while True:
-                Name = input('Enter Student Name: ')
-                if Name.isdigit() or Name.isspace() or Name == '':
-                    print('Invalid Name,Please try again...')
-                else:
-                    break
+            Name = input("  $ Enter Student Name : ")
+            if Name.isdigit() or Name.isspace() or Name == '':
+                print("  ⚠  Invalid Name, Please try again...")
+            else:
+                break
+
+        print("""
+╔══════════════════════════════════════╗
+║       E N T E R   M A R K S          ║
+╚══════════════════════════════════════╝""")
+
         Marks = []
+        subjects = ['IOT', 'Maths', 'OS', 'DSA', 'C Programming']
 
-        while len(Marks) != 5:
-
-            if len(Marks) == 0:
-                while True:
-                    try:
-                        Marks.append(int(input('Enter IOT Marks: ')))
-                        break
-                    except ValueError:
-                        print('fill again...')
-
-            if len(Marks) == 1:
-                while True:
-                    try:
-                        Marks.append(int(input('Enter Maths Marks: ')))
-                        break
-                    except ValueError:
-                        print('fill again...')
-
-            if len(Marks) == 2:
-                while True:
-                    try:
-                        Marks.append(int(input('Enter OS Marks: ')))
-                        break
-                    except ValueError:
-                        print('fill again...')
-
-            if len(Marks) == 3:
-                while True:
-                    try:
-                        Marks.append(int(input('Enter DSA Marks: ')))
-                        break
-                    except ValueError:
-                        print('fill again...')
-
-            if len(Marks) == 4:
-                while True:
-                    try:
-                        Marks.append(int(input('Enter C Programming Marks: ')))
-                        break
-                    except ValueError:
-                        print('fill again...')
+        for subject in subjects:
+            while True:
+                try:
+                    mark = int(input(f"  $ {subject:<18s}: "))
+                    Marks.append(mark)
+                    break
+                except ValueError:
+                    print(f"  ⚠  Invalid marks for {subject}, try again...")
 
         s1 = Student(Name, Id, Marks)
         s1.save_in_file()
 
+        print(f"""
+╔══════════════════════════════════════╗
+║   ✔  Student '{Name}' Added !
+╚══════════════════════════════════════╝
+""")
+
     elif choice == 2:
+        print("""
+╔══════════════════════════════════════════╗
+║     A L L   S T U D E N T S             ║
+╚══════════════════════════════════════════╝""")
         Student.read_from_file()
 
     elif choice == 3:
-
         try:
             topper = None
-
             with open("erp.txt", "r") as f:
                 for line in f:
                     student_data = json.loads(line)
-
                     if (topper is None) or (student_data["average"] > topper["average"]):
                         topper = student_data
 
             if topper:
-                print("\n🏆 Topper Student:")
-                print("Name:", topper["name"])
-                print("ID:", topper["id"])
-                print("Marks:", topper["marks"])
-                print("Average:", topper["average"])
+                print(f"""
+╔══════════════════════════════════════════╗
+║    🏆  T O P P E R   S T U D E N T      ║
+╠══════════════════════════════════════════╣
+║  Name          : {topper['name']:<24s}║
+║  ID            : {str(topper['id']):<24s}║
+╠══════════════════════════════════════════╣
+║  IOT           : {str(topper['marks'][0]):<24s}║
+║  Maths         : {str(topper['marks'][1]):<24s}║
+║  OS            : {str(topper['marks'][2]):<24s}║
+║  DSA           : {str(topper['marks'][3]):<24s}║
+║  C Programming : {str(topper['marks'][4]):<24s}║
+╠══════════════════════════════════════════╣
+║  Average       : {str(topper['average']):<24s}║
+╚══════════════════════════════════════════╝
+""")
             else:
-                print("No students found")
-
+                print("""
+╔══════════════════════════════════════╗
+    ⚠  No Students Found !            
+╚══════════════════════════════════════╝
+""")
         except FileNotFoundError:
-            print("File not found")
+            print("""
+╔══════════════════════════════════════╗
+    ⚠  File Not Found !               
+╚══════════════════════════════════════╝
+""")
 
     elif choice == 4:
+        print("""
+╔══════════════════════════════════════════════╗
+║                                              ║
+    G O O D B Y E !  See You Next Time  👋    
+║                                              ║
+╚══════════════════════════════════════════════╝
+""")
         break
 
     else:
-        print('Invalid Choice,Please try again...')
+        print("""
+╔══════════════════════════════════════╗
+║   ⚠  Invalid Choice, Try Again !    ║
+╚══════════════════════════════════════╝
+""")
